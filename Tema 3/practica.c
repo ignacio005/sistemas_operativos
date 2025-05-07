@@ -9,7 +9,7 @@
 #include <wait.h>
 # define VUELTAS 10000000000
 void funcion1(int sig){
-kill(rt2, SIGUSR1)
+kill(rt2, SIGUSR1) //envia señal para ejecutar SIGUSR1
 }
 
 void funcion2(int sig2){
@@ -22,9 +22,9 @@ if (rt1 == 0){//Hijo
 int rt2 = fork();
 if (rt2 == 0){
 //Nieto
-signal(SIGUSR2, funcion2);
+signal(SIGUSR2, funcion2); 
 }else{
-signal(SIGUSR1, funcion1);
+signal(SIGUSR1, funcion1);// indica tipo de señal y la funcion q va a ejecutar
 }
 }else{
 // Main

@@ -6,7 +6,7 @@
 void main(){
 int fd = open("archivo.txt", O_CREAT | O_RDWR, 0666); 
 char mensaje[] = "Creando el primer archivo.";
-write(fd, mensaje, strlen(mensaje));
+write(fd, mensaje, strlen(mensaje));// No se pone &mensaje porque el array mensaje ya es puntero.
 
 lseek(fd, 0, SEEK_SET); //Mover el puntero de lectura/escritura al inicio del archivo para leer. Esta al final por haber escrito antes
 

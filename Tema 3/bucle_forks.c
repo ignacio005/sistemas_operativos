@@ -11,7 +11,7 @@ int rt = fork();
 if(rt == 0){ // filtro para evitar q los hijos se conviertan en padres
              // (rt != 0) para q los hijos se conviertan en padres
 printf("Soy Hijo %d, mi ppid %d y mi pid %d \n", i, getppid(), getpid());
-break;
+break;// el hijo ejecuta el break el padre no
 }
 }
 sleep(1); // para guardar el estado del padre o while(wait(NULL)>0)
