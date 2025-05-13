@@ -8,7 +8,7 @@ sem_t sofas;
 sem_t silla;
 sem_t peluquero;
 sem_t cliente_duerme;
-sem_t mutex;
+sem_t mutex; // para q mas de un peluquero no pueda acceder al contador a la vez
 
 void *cortar(void *arg){
 
@@ -16,13 +16,13 @@ void *cortar(void *arg){
 	while(contador<50){
 		
 		int num =*(int *)arg;
-		sem_wait(&mutex);
 		sem_wait(&peluquero);
-		printf("Peluquero %d", num);
+		sem_wait(&mutex);// se pone abajo para proteger a contador una vez despiertos los peluqueros
+		printf("Peluquero %d corta el pelo.\n", num);
 		sleep(5);
 		contador ++;
-		sem_post(&cliente_duerme);
 		sem_post(&mutex);
+		sem_post(&cliente_duerme);
 	
 	}
 }
@@ -33,11 +33,15 @@ void *pasar(void *arg){
 	int num =*(int *)arg;
 	num++;
 	sem_wait(&aforo); // mientras este lleno
-	printf("Soy %d", num);
+	printf("Soy el cliente %d.\n", num);
 	fflush(stdout);
 	sleep(2);
 	sem_wait(&sofas); // mientras este lleno
+	printf("Soy el cliente %d, me siento en sofá.\n", num);
+	sleep(1);
 	sem_wait(&silla); // mientras este lleno
+	printf("Soy el cliente %d, me siento en silla.\n", num);
+	sleep(1);
 	sem_post(&sofas); // liberas el sofa para el q haya salido se llene
 	sem_post(&peluquero); // Peluquero corta el pelo
 	sem_wait(&cliente_duerme); // se duerme al cliente
